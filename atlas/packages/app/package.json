@@ -28,6 +28,7 @@
 		"chromatic": "chromatic --project-token=qq8aetz26u"
 	},
 	"dependencies": {
+		"@apollo/client": "^3.0.2",
 		"@emotion/babel-preset-css-prop": "^10.0.27",
 		"@emotion/core": "^10.0.28",
 		"@reach/router": "^1.3.3",
@@ -48,6 +49,7 @@
 		"chromatic": "^4.0.3",
 		"customize-cra": "^1.0.0",
 		"emotion-normalize": "^10.1.0",
+		"graphql": "^15.3.0",
 		"react": "^16.13.1",
 		"react-app-rewired": "^2.1.6",
 		"react-docgen-typescript-loader": "^3.7.1",
