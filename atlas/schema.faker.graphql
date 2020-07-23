@@ -38,11 +38,17 @@ type Channel {
 
   description: String! @fake(type: companyCatchPhrase)
 
-  coverPhotoURL: String! @fake(type:imageUrl)
+  coverPhotoURL: String! @fake(type:imageUrl, options:{
+    randomizeImageUrl: true
+  })
 
-  avatarPhotoURL: String!@fake(type: avatarUrl)
+  avatarPhotoURL: String @fake(type: avatarUrl)
 
   isPublic: Boolean!
+  
+  totalViews: Int! @fake(type: number, options: {
+    minNumber: 1000
+  })
 
   isCurated: Boolean! 
 
@@ -143,6 +149,8 @@ type Video {
   title: String!
 
   description: String!
+  
+  views: Int!
 
   # In seconds
   duration: Int!
@@ -150,7 +158,9 @@ type Video {
   # In intro
   skippableIntroDuration: Int
 
-  thumbnailURL: String!
+  thumbnailURL: String! @fake(type: imageUrl, options:{
+    randomizeImageUrl: true
+  })
 
   Language: Language
 
@@ -174,6 +184,9 @@ type Video {
   isExplicit: Boolean!
 
   license: License!
+  
+  publishedBy: Channel!
+
 }
 
 union FreeTextSearchResultItemType = Video | Channel
@@ -191,7 +204,7 @@ type Query {
   channel(id: ID!): Channel
 
   # List all channel by given constraints
-  channels(order_by_creation_date: Boolean, ignore_curated: Boolean, ignore_non_public: Boolean, offset: Int, limit: Int): [Channel!]
+  channels(order_by_creation_date: Boolean, ignore_curated: Boolean, ignore_non_public: Boolean, offset: Int, limit: Int): [Channel!] @listLength(min:12, max: 24)
 
   # Lookup a channel by its ID
   category(id: ID!): Category
@@ -203,7 +216,7 @@ type Query {
   video(id: ID!): Video
 
   # List all videos by given constraints
-  videos(order_by_publication_date: Boolean, ignore_curated: Boolean, ignore_non_public: Boolean, in_category_with_ID: ID, offset: Int, limit: Int): [Video!]
+  videos(order_by_publication_date: Boolean, ignore_curated: Boolean, ignore_non_public: Boolean, in_category_with_ID: ID, offset: Int, limit: Int): [Video!] @listLength(min:24, max: 36)
 
   # List all top trending videos
   featured_videos: [Video!]
