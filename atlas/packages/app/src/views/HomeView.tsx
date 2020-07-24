@@ -1,20 +1,9 @@
 import { css } from '@emotion/core'
 import React from 'react'
-import { useQuery, gql } from '@apollo/client'
 import { ChannelGallery, Hero, Main, SeriesGallery, TagsGallery, VideoGallery } from '@/components'
 import { RouteComponentProps } from '@reach/router'
 
 const backgroundImg = 'https://source.unsplash.com/user/erondu/1600x900'
-
-const FETCH_CHANNELS_PREVIEWS = gql`
-	query FetchChannels {
-		channels {
-			id
-			handle
-			avatarPhotoURL
-		}
-	}
-`
 
 const HomeView: React.FC<RouteComponentProps> = () => (
 	<>

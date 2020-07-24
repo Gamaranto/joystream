@@ -4,7 +4,7 @@ import { useQuery, gql } from '@apollo/client'
 import { ChannelPreview, Gallery } from '@/shared/components'
 
 const FETCH_CHANNELS_PREVIEWS = gql`
-	query FetchChannels {
+	query FetchChannelsPreview {
 		channels {
 			id
 			handle
