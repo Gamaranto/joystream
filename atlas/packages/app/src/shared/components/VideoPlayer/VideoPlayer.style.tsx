@@ -1,6 +1,7 @@
+import React from 'react'
 import styled from '@emotion/styled'
 import { colors, spacing, typography } from '../../theme'
-import { PlayIcon } from '../../icons'
+import Icon from '../Icon'
 
 export const Container = styled.div`
   position: relative;
@@ -133,7 +134,7 @@ export const PlayOverlay = styled.div`
 
   cursor: pointer;
 `
-
+const PlayIcon = () => <Icon icon="play" />
 export const StyledPlayIcon = styled(PlayIcon)`
   height: 72px;
   width: 72px;

@@ -1,19 +1,25 @@
 import React from 'react'
 import { SerializedStyles } from '@emotion/core'
-import { NavButtonStyleProps, useCSS } from './NavButton.style'
-import { ChevronLeftIcon, ChevronRightIcon } from '../../icons'
+import { NavButtonStyleProps, StyledButton } from './NavButton.style'
+import Icon from '../Icon'
 
 type NavButtonProps = {
   direction: 'right' | 'left'
-  outerCss: SerializedStyles | SerializedStyles[] | (SerializedStyles | undefined) | (SerializedStyles | undefined)[]
+  outerCss: SerializedStyles | (SerializedStyles | undefined)[]
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
 } & NavButtonStyleProps
 
-export default function NavButton({ direction = 'right', onClick, outerCss, ...styleProps }: Partial<NavButtonProps>) {
-  const styles = useCSS(styleProps)
+const NavButton: React.FC<Partial<NavButtonProps>> = ({
+  direction = 'right',
+  onClick,
+  outerCss,
+  variant = 'primary',
+}) => {
   return (
-    <button css={[styles, outerCss]} onClick={onClick}>
-      {direction === 'right' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-    </button>
+    <StyledButton css={outerCss} onClick={onClick} variant={variant}>
+      {direction === 'right' ? <Icon icon="chevron-right" /> : <Icon icon="chevron-left" />}
+    </StyledButton>
   )
 }
+
+export default NavButton

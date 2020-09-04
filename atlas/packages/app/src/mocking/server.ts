@@ -1,10 +1,11 @@
-import { createServer } from 'miragejs'
+import { createServer, Model, belongsTo } from 'miragejs'
 import { createGraphQLHandler, mirageGraphQLFieldResolver } from '@miragejs/graphql'
 import { shuffle } from 'lodash'
 
 import schema from '../schema.graphql'
 import { mockChannels, mockVideos } from '@/mocking/data'
 import { GetNewestVideosVariables } from '@/api/queries/__generated__/GetNewestVideos'
+import { SearchVariables } from '@/api/queries/__generated__/Search'
 
 createServer({
   routes() {
@@ -32,6 +33,38 @@ createServer({
           channels: (...params: unknown[]) => {
             const channels = mirageGraphQLFieldResolver(...params)
             return shuffle(channels)
+          },
+          // FIXME: This resolver is currently broken and returns the same result n times instead of the correct result.
+          search: (obj: unknown, { query_string }: SearchVariables, context: unknown, info: unknown) => {
+            const items = [...mockVideos, ...mockChannels]
+
+            let rankCount = 0
+            const matchQueryStr = (str: string) => str.includes(query_string) || query_string.includes(str)
+
+            const relevantItems = items.flatMap((item: any) => {
+              if (item.__typename === 'Channel') {
+                return matchQueryStr(item.handle)
+                  ? [
+                      {
+                        __typename: 'FreeTextSearchResult',
+                        item,
+                        rank: rankCount++,
+                      },
+                    ]
+                  : []
+              }
+              return matchQueryStr(item.description) || matchQueryStr(item.title)
+                ? [
+                    {
+                      __typename: 'FreeTextSearchResult',
+                      item,
+                      rank: rankCount++,
+                    },
+                  ]
+                : []
+            })
+
+            return relevantItems
           },
         },
       },

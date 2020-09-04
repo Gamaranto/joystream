@@ -1,5 +1,6 @@
 import React from 'react'
 import { css } from '@emotion/core'
+import styled from '@emotion/styled'
 
 import Button from '../Button'
 import type { ButtonStyleProps } from '../Button/Button.style'
@@ -115,15 +116,10 @@ const disabled = ({ disabled }: ToggleButtonStyleProps) =>
       `
     : null
 
-export const StyledToggleButton: React.FC<ToggleButtonStyleProps> = (props) => (
-  <Button
-    {...props}
-    containerCss={css`
-     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-      ${colorsFromProps(props)}
-      ${pressed(props)}
-      ${hoverTransition(props)}
-      ${disabled(props)}
-      `}
-  />
-)
+export const StyledToggleButton = styled(Button)`
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      ${colorsFromProps}
+      ${pressed}
+      ${hoverTransition}
+      ${disabled}
+`

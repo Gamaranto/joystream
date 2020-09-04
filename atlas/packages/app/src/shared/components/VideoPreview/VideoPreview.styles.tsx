@@ -1,7 +1,8 @@
+import React from 'react'
 import styled from '@emotion/styled'
 import { colors, spacing, typography } from '../../theme'
 import Avatar from '../Avatar'
-import { PlayIcon } from '../../icons'
+import Icon from '../Icon'
 import { HOVER_BORDER_SIZE } from './VideoPreviewBase.styles'
 
 type CoverImageProps = Record<string, unknown>
@@ -38,6 +39,7 @@ export const CoverHoverOverlay = styled.div`
   align-items: center;
 `
 
+const PlayIcon = () => <Icon icon="play" />
 export const CoverPlayIcon = styled(PlayIcon)`
   transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   transform: translateY(40px);

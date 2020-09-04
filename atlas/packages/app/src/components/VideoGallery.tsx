@@ -41,7 +41,9 @@ const VideoGallery: React.FC<VideoGalleryProps> = ({ title, action, videos, load
   }, [])
 
   const handleVideoClick = (id: string) => {
-    navigate(routes.video(id))
+    navigate(routes.video(id), {
+      replace: true,
+    })
   }
 
   return (

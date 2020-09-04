@@ -1,11 +1,13 @@
 import React from 'react'
 import { SerializedStyles } from '@emotion/core'
 import { ButtonStyleProps, StyledButton, StyledIcon } from './Button.style'
+import type { IconType } from '../Icon'
 
 export type ButtonProps = {
-  icon: boolean
+  icon: IconType
   disabled: boolean
   containerCss: SerializedStyles
+  className: string
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
 } & Omit<ButtonStyleProps, 'clickable' | 'hasText'>
 
@@ -17,6 +19,7 @@ const Button: React.FC<Partial<ButtonProps>> = ({
   full = false,
   size = 'regular',
   containerCss,
+  className,
   onClick,
 }) => {
   const clickable = !!onClick
@@ -29,6 +32,7 @@ const Button: React.FC<Partial<ButtonProps>> = ({
   return (
     <StyledButton
       css={containerCss}
+      className={className}
       onClick={handleClick}
       disabled={disabled}
       variant={variant}
@@ -37,7 +41,7 @@ const Button: React.FC<Partial<ButtonProps>> = ({
       full={full}
       size={size}
     >
-      {icon && <StyledIcon />}
+      {icon && <StyledIcon icon={icon} />}
       {children && <span>{children}</span>}
     </StyledButton>
   )
