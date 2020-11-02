@@ -1,15 +1,17 @@
 import styled from '@emotion/styled'
+
 import { Avatar } from '@/shared/components'
 import theme from '@/shared/theme'
+import channelDefaultCoverPattern from '@/assets/channel-cover-pattern.svg'
 
 type ChannelHeaderProps = {
   coverPhotoURL: string | null
 }
 export const Header = styled.section<ChannelHeaderProps>`
   background-image: linear-gradient(0deg, #000000 10.85%, rgba(0, 0, 0, 0) 88.35%),
-    ${(props) => `url(${props.coverPhotoURL})`};
-  background-size: cover;
-  background-position: center center;
+    url(${(props) => (props.coverPhotoURL ? props.coverPhotoURL : channelDefaultCoverPattern)});
+  background-size: ${(props) => (props.coverPhotoURL ? 'cover' : 'auto')};
+  background-position: ${(props) => (props.coverPhotoURL ? 'center center' : 'right top')};
   background-repeat: no-repeat;
   height: 430px;
   padding: 0 ${theme.sizes.b8}px;
