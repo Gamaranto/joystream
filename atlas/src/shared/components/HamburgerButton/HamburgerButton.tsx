@@ -1,22 +1,19 @@
 import React from 'react'
-import { SerializedStyles } from '@emotion/core'
-import { useCSS } from './HamburgerButton.style'
+import { Hamburger, HamburgerBox, HamburgerInner } from './HamburgerButton.style'
 
 type HamburgerButtonProps = {
   active: boolean
   onClick: (e: React.MouseEvent<HTMLElement>) => void
-  outerStyles?: SerializedStyles
+  className?: string
 }
 
-const HamburgerButton: React.FC<HamburgerButtonProps> = ({ active, onClick, outerStyles }) => {
-  const styles = useCSS({ active })
-
+const HamburgerButton: React.FC<HamburgerButtonProps> = ({ active, onClick, className }) => {
   return (
-    <div css={[styles.hamburger, outerStyles]} onClick={onClick}>
-      <span css={styles.hamburgerBox}>
-        <span css={styles.hamburgerInner} />
-      </span>
-    </div>
+    <Hamburger onClick={onClick} className={className}>
+      <HamburgerBox>
+        <HamburgerInner active={active} />
+      </HamburgerBox>
+    </Hamburger>
   )
 }
 

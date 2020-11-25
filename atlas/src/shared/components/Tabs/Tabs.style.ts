@@ -1,35 +1,26 @@
-import { colors, spacing, typography } from '../../theme'
-import { makeStyles, StyleFn } from '../../utils'
+import { colors, sizes, typography } from '../../theme'
+import styled from '@emotion/styled'
 
 export type TabsStyleProps = Record<string, unknown>
 
-const container: StyleFn = () => ({
-  fontFamily: typography.fonts.base,
-  color: colors.white,
-})
+export const Container = styled.div`
+  font-family: ${typography.fonts.base};
+  color: ${colors.white};
+`
 
-const tabs: StyleFn = () => ({
-  display: 'flex',
-})
-const tab: StyleFn = () => ({
-  flexBasis: 'content',
-  padding: `${spacing.m} ${spacing.l}`,
-  cursor: 'pointer',
-  borderBottom: `3px solid ${colors.gray[900]}`,
-  minWidth: '100px',
-  colors: colors.gray[200],
-  textAlign: 'center',
-})
-
-const activeTab: StyleFn = () => ({
-  ...tab({}, {}),
-  color: colors.white,
-  backgroundColor: 'transparent',
-  borderBottom: `3px solid ${colors.blue[500]}`,
-})
-export const useCSS = (props: TabsStyleProps) => ({
-  container: makeStyles([container])(props),
-  tabs: makeStyles([tabs])(props),
-  tab: makeStyles([tab])(props),
-  activeTab: makeStyles([activeTab])(props),
-})
+export const TabsGroup = styled.div`
+  display: flex;
+`
+type TabProps = {
+  active: boolean
+}
+export const Tab = styled.div<TabProps>`
+  flex-basis: content;
+  padding: ${sizes(4)} ${sizes(5)};
+  cursor: pointer;
+  border-bottom: 3px solid ${(props) => (props.active ? colors.blue[500] : colors.gray[900])};
+  min-width: ${sizes(25)};
+  color: ${(props) => (props.active ? colors.white : colors.gray[200])};
+  text-align: center;
+  background-color: ${(props) => (props.active ? 'transparent' : '')};
+`

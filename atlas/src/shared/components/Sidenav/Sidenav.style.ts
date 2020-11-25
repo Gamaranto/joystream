@@ -1,102 +1,84 @@
-import theme from '../../theme'
-import { makeStyles, StyleFn } from '../../utils'
+import styled from '@emotion/styled'
+import { colors, sizes, typography } from '../../theme'
+import HamburgerButton from '../HamburgerButton'
 
 export const SIDENAV_WIDTH = 56
 export const EXPANDED_SIDENAV_WIDTH = 360
 
 type SidenavStyleProps = {
-  expanded: boolean
+  expanded?: boolean
 }
 
-const nav: StyleFn = () => ({
-  position: 'fixed',
-  top: 0,
-  left: 0,
-  bottom: 0,
-  zIndex: 100,
+export const Nav = styled.nav`
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 100;
+  overflow: hidden;
+  padding: ${sizes(8)} ${sizes(4)};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: ${colors.blue[700]};
+  color: ${colors.white};
+`
 
-  overflow: 'hidden',
+export const ExpandButton = styled(HamburgerButton)`
+  padding: -7px;
+  margin: -4px;
+`
 
-  padding: `${theme.spacing.xxl} ${theme.spacing.m}`,
+export const DrawerOverlay = styled.div<SidenavStyleProps>`
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 99;
 
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'flex-start',
+  display: ${(props) => (props.expanded ? 'block' : 'none')};
+  background-color: rgba(0, 0, 0, 0.5);
+`
 
-  backgroundColor: theme.colors.blue[700],
-  color: theme.colors.white,
-})
+export const NavItemsWrapper = styled.div`
+  margin-top: 90px;
+`
 
-const expandButton: StyleFn = () => ({
-  padding: '7px',
-  margin: '-4px',
-})
+export const NavItemContainer = styled.div`
+  :not(:first-child) {
+    margin-top: ${sizes(10)};
+  }
+  display: flex;
+  flex-direction: column;
+`
 
-const drawerOverlay: StyleFn<SidenavStyleProps> = (_, { expanded }) => ({
-  position: 'fixed',
-  top: 0,
-  right: 0,
-  bottom: 0,
-  left: 0,
-  zIndex: 99,
+export const Item = styled.a`
+  display: flex;
+  align-items: center;
+  > span {
+    margin-left: ${sizes(8)};
+    font-weight: bold;
+    font-family: ${typography.fonts.headers};
+    font-size: ${typography.sizes.h5};
+    line-height: 1;
+  }
+`
 
-  display: expanded ? 'block' : 'none',
+export const NavSubitemsWrapper = styled.div`
+  padding-left: calc(${typography.sizes.icon.xlarge}+ ${sizes(8)});
+  overflow: hidden;
+  > div {
+    display: flex;
+    flex-direction: column;
+  }
+`
 
-  backgroundColor: 'rgba(0, 0, 0, 0.5)',
-})
-
-const navItemsWrapper: StyleFn = () => ({
-  marginTop: '90px',
-})
-
-const navItemContainer: StyleFn = () => ({
-  ':not(:first-child)': {
-    marginTop: theme.spacing.xxxl,
-  },
-  display: 'flex',
-  flexDirection: 'column',
-})
-
-const navItem: StyleFn = () => ({
-  display: 'flex',
-  alignItems: 'center',
-  '> span': {
-    marginLeft: theme.spacing.xxl,
-    fontWeight: 'bold',
-    fontFamily: theme.typography.fonts.headers,
-    fontSize: theme.typography.sizes.h5,
-    lineHeight: 1,
-  },
-})
-
-const navSubitemsWrapper: StyleFn = () => ({
-  paddingLeft: `calc(${theme.typography.sizes.icon.xlarge} + ${theme.spacing.xxl})`,
-  overflow: 'hidden',
-  '> div': {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-})
-
-const navSubitem: StyleFn = () => ({
-  fontSize: theme.typography.sizes.body2,
-  fontFamily: theme.typography.fonts.base,
-  marginTop: theme.spacing.xxl,
-  ':first-child': {
-    marginTop: theme.spacing.xl,
-  },
-})
-
-export const useSidenavCSS = (props: SidenavStyleProps) => ({
-  nav: makeStyles([nav])(props),
-  expandButton: makeStyles([expandButton])(props),
-  drawerOverlay: makeStyles([drawerOverlay])(props),
-  navItemsWrapper: makeStyles([navItemsWrapper])(props),
-})
-
-export const useNavItemCSS = (props: SidenavStyleProps) => ({
-  navItemContainer: makeStyles([navItemContainer])(props),
-  navItem: makeStyles([navItem])(props),
-  navSubitemsWrapper: makeStyles([navSubitemsWrapper])(props),
-  navSubitem: makeStyles([navSubitem])(props),
-})
+export const NavSubitem = styled.a`
+  font-size: ${typography.sizes.body2};
+  font-family: ${typography.fonts.base};
+  margin-top: ${sizes(8)};
+  :first-child {
+    margin-top: ${sizes(6)};
+  }
+`

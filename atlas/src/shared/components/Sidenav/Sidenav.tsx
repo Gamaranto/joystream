@@ -1,25 +1,39 @@
 import React, { useState } from 'react'
 import { animated, useSpring, useTransition } from 'react-spring'
 import useResizeObserver from 'use-resize-observer'
-import HamburgerButton from '../HamburgerButton'
-import { EXPANDED_SIDENAV_WIDTH, SIDENAV_WIDTH, useNavItemCSS, useSidenavCSS } from './Sidenav.style'
 
-type NavSubitem = {
+import {
+  EXPANDED_SIDENAV_WIDTH,
+  NavItemsWrapper,
+  SIDENAV_WIDTH,
+  Nav,
+  DrawerOverlay,
+  NavItemContainer,
+  Item,
+  NavSubitem,
+  NavSubitemsWrapper,
+  ExpandButton,
+} from './Sidenav.style'
+
+type NavSubitemType = {
   name: string
 }
 
-type NavItem = {
-  subitems?: NavSubitem[]
+type NavItemType = {
+  subitems?: NavSubitemType[]
   icon: React.ReactNode
-} & NavSubitem
+} & NavSubitemType
 
 type SidenavProps = {
-  items: NavItem[]
+  items: NavItemType[]
 }
+
+const AnimatedNav = animated(Nav)
+const AnimatedDrawerOverlay = animated(DrawerOverlay)
+const AnimatedNavSubitemsWrapper = animated(NavSubitemsWrapper)
 
 const Sidenav: React.FC<SidenavProps> = ({ items }) => {
   const [expanded, setExpanded] = useState(false)
-  const styles = useSidenavCSS({ expanded })
 
   const containerAnimationStyles = useSpring({
     from: { width: SIDENAV_WIDTH },
@@ -33,50 +47,47 @@ const Sidenav: React.FC<SidenavProps> = ({ items }) => {
 
   return (
     <>
-      <animated.nav css={styles.nav} style={containerAnimationStyles}>
-        <HamburgerButton active={expanded} onClick={() => setExpanded(!expanded)} outerStyles={styles.expandButton} />
-        <div css={styles.navItemsWrapper}>
+      <AnimatedNav style={containerAnimationStyles}>
+        <ExpandButton active={expanded} onClick={() => setExpanded(!expanded)} />
+        <NavItemsWrapper>
           {items.map((item) => (
             <NavItem key={item.name} expanded={expanded} subitems={item.subitems}>
               {item.icon}
               <span>{item.name}</span>
             </NavItem>
           ))}
-        </div>
-      </animated.nav>
+        </NavItemsWrapper>
+      </AnimatedNav>
       {overlayTransitions.map(
         ({ item, key, props }) =>
-          item && <animated.div css={styles.drawerOverlay} key={key} style={props} onClick={() => setExpanded(false)} />
+          item && <AnimatedDrawerOverlay key={key} style={props} onClick={() => setExpanded(false)} />
       )}
     </>
   )
 }
 
 type NavItemProps = {
-  subitems?: NavSubitem[]
+  subitems?: NavSubitemType[]
   expanded: boolean
 }
 
 const NavItem: React.FC<NavItemProps> = ({ expanded, subitems, children }) => {
-  const styles = useNavItemCSS({ expanded })
   const { height: subitemsHeight, ref: subitemsRef } = useResizeObserver<HTMLDivElement>()
   const subitemsAnimationStyles = useSpring({ height: expanded ? subitemsHeight || 0 : 0 })
 
   return (
-    <div css={styles.navItemContainer}>
-      <a css={styles.navItem}>{children}</a>
+    <NavItemContainer>
+      <Item>{children}</Item>
       {subitems && (
-        <animated.div css={styles.navSubitemsWrapper} style={subitemsAnimationStyles}>
+        <AnimatedNavSubitemsWrapper style={subitemsAnimationStyles}>
           <div ref={subitemsRef}>
             {subitems.map((item) => (
-              <a key={item.name} css={styles.navSubitem}>
-                {item.name}
-              </a>
+              <NavSubitem key={item.name}>{item.name}</NavSubitem>
             ))}
           </div>
-        </animated.div>
+        </AnimatedNavSubitemsWrapper>
       )}
-    </div>
+    </NavItemContainer>
   )
 }
 

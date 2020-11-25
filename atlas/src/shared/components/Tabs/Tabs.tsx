@@ -1,35 +1,40 @@
-import React, { useState } from 'react'
-import { useCSS, TabsStyleProps } from './Tabs.style'
+import React, { useCallback, useState } from 'react'
+import { TabsGroup, Tab, Container } from './Tabs.style'
 
 type TabsProps = {
-  children: Array<React.ReactNode>
   onChange?: (tab: string) => void
-} & TabsStyleProps
+}
 
-export default function Tabs({ children, onChange = () => {}, ...styleProps }: TabsProps) {
+const Tabs: React.FC<TabsProps> = ({ children, onChange }) => {
   const [activeTab, setActiveTab] = useState(0)
 
-  function onTabChange(tab: any): void {
-    setActiveTab(tab)
-    onChange(tab)
-  }
-
-  const styles = useCSS(styleProps)
+  const onTabChange = useCallback(
+    (tab) => {
+      if (onChange) {
+        onChange(tab)
+      }
+      setActiveTab(tab)
+    },
+    [onChange]
+  )
 
   return (
-    <div css={styles.container}>
-      <div css={styles.tabs}>
-        {children.map((tab: any, index: any) => (
-          <div
-            key={`tab-${index}`}
-            css={index === activeTab ? styles.activeTab : styles.tab}
-            onClick={() => onTabChange(index)}
-          >
-            {tab.props.label}
-          </div>
-        ))}
-      </div>
-      <div>{children.filter((tab: any, index: any) => index === activeTab).map((tab: any) => tab)}</div>
-    </div>
+    <Container>
+      <TabsGroup>
+        {React.Children.map(children, (tab, idx) => {
+          if (!React.isValidElement(tab)) {
+            return null
+          }
+          return (
+            <Tab key={`tab-${idx}`} active={idx === activeTab} onClick={() => onTabChange(idx)}>
+              {tab.props.label}
+            </Tab>
+          )
+        })}
+      </TabsGroup>
+      <div>{React.Children.map(children, (tab, idx) => (idx === activeTab ? tab : null))}</div>
+    </Container>
   )
 }
+
+export default Tabs

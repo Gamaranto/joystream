@@ -1,47 +1,22 @@
-import React, { ReactChild } from 'react'
-import { Link } from '@reach/router'
-import { CustomLinkStyleProps, useCSS } from './Link.style'
+import React from 'react'
+import { LinkProps } from '@reach/router'
+import { RegularLink, DisabledLabel } from './Link.style'
 
 type CustomLinkProps = {
-  children: ReactChild
-  to: string
-  disabled?: boolean
-  className?: string
-  replace?: boolean
-  ref?: React.Ref<HTMLAnchorElement>
-  innerRef?: React.Ref<HTMLAnchorElement>
-  getProps?: any
-  state?: any
-  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void
-} & CustomLinkStyleProps
+  disabled: boolean
+} & LinkProps<any>
 
-export default function CustomLink({
-  children,
-  to = '',
-  disabled = false,
-  className = '',
-  replace = false,
-  ref = () => {},
-  innerRef = () => {},
-  getProps = () => {},
-  state = null,
-  ...props
-}: CustomLinkProps) {
-  const styles = useCSS(props)
-
-  if (disabled) return <label css={styles.disabled}>{children}</label>
-  return (
-    <Link
-      to={to}
-      css={styles.regular}
-      className={className}
-      replace={replace}
-      ref={ref}
-      innerRef={innerRef}
-      getProps={getProps}
-      state={state}
-    >
+const CustomLink: React.ForwardRefRenderFunction<HTMLAnchorElement, CustomLinkProps> = (
+  { children, disabled = false, ...linkProps },
+  ref
+) => {
+  return disabled ? (
+    <DisabledLabel>{children}</DisabledLabel>
+  ) : (
+    <RegularLink ref={ref as any} {...linkProps}>
       {children}
-    </Link>
+    </RegularLink>
   )
 }
+
+export default React.forwardRef(CustomLink)

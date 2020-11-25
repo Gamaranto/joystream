@@ -1,63 +1,61 @@
 // based on https://github.com/jonsuh/hamburgers licensed under MIT
+import styled from '@emotion/styled'
+import { colors, sizes } from '../../theme'
 
-import { makeStyles, StyleFn } from '../../utils'
-import { colors } from '../../theme'
-
-type HamburgerButtonStyleProps = {
+type HamburgerActive = {
   active: boolean
 }
+export const HamburgerBox = styled.span`
+  width: 18px;
+  height: ${sizes(3)};
+  display: inline-block;
+  position: relative;
+`
 
-const hamburgerBox: StyleFn = () => ({
-  width: '18px',
-  height: '12px',
-  display: 'inline-block',
-  position: 'relative',
-})
+export const HamburgerInner = styled.span<HamburgerActive>`
+  display: block;
+  top: 50%;
+  margin-top: -1px;
+  transition-duration: 0.075s;
+  transition-delay: ${(props) => (props.active ? '0.12s' : '0')};
+  transition-timing-function: ${(props) =>
+    props.active ? 'cubic-bezier(0.215, 0.61, 0.355, 1)' : 'cubic-bezier(0.55, 0.055, 0.675, 0.19)'};
+  transform: ${(props) => (props.active ? 'rotate(45deg)' : 'none')};
 
-const hamburgerInner: StyleFn<HamburgerButtonStyleProps> = (_, { active }) => ({
-  display: 'block',
-  top: '50%',
-  marginTop: '-1px',
+  &,
+  ::before,
+  ::after {
+    width: 18px;
+    height: 2px;
+    background-color: ${colors.white};
+    position: absolute;
+  }
+  ::before,
+  ::after {
+    content: '';
+    display: block;
+  }
+  ::before {
+    top: ${(props) => (props.active ? 0 : -5)}px;
+    opacity: ${(props) => (props.active ? 0 : 1)};
+    transition: ${(props) =>
+      props.active ? 'top 0.075s ease, opacity 0.075s 0.12s ease' : 'top 0.075s 0.12s ease, opacity 0.075s ease'};
+  }
+  ::after {
+    bottom: ${(props) => (props.active ? 0 : -5)}px;
+    transform: ${(props) => (props.active ? 'rotate(-90deg)' : 'none')};
+    transition: ${(props) =>
+      props.active
+        ? 'bottom 0.075s ease, transform 0.075s 0.12s cubic-bezier(0.215, 0.61, 0.355, 1)'
+        : 'bottom 0.075s 0.12s ease, transform 0.075s cubic-bezier(0.55, 0.055, 0.675, 0.19)'};
+  }
+`
 
-  transitionDuration: '0.075s',
-  transitionDelay: active ? '0.12s' : '0',
-  transitionTimingFunction: active ? 'cubic-bezier(0.215, 0.61, 0.355, 1)' : 'cubic-bezier(0.55, 0.055, 0.675, 0.19)',
-  transform: active ? 'rotate(45deg)' : 'none',
-  '&, &::before, &::after': {
-    width: '18px',
-    height: '2px',
-    backgroundColor: colors.white,
-    position: 'absolute',
-  },
-  '&::before, &::after': {
-    content: '""',
-    display: 'block',
-  },
-  '&::before': {
-    top: active ? 0 : '-5px',
-    opacity: active ? 0 : 1,
-    transition: active ? 'top 0.075s ease, opacity 0.075s 0.12s ease' : 'top 0.075s 0.12s ease, opacity 0.075s ease',
-  },
-  '&::after': {
-    bottom: active ? 0 : '-5px',
-    transform: active ? 'rotate(-90deg)' : 'none',
-    transition: active
-      ? 'bottom 0.075s ease, transform 0.075s 0.12s cubic-bezier(0.215, 0.61, 0.355, 1)'
-      : 'bottom 0.075s 0.12s ease, transform 0.075s cubic-bezier(0.55, 0.055, 0.675, 0.19)',
-  },
-})
-
-const hamburger: StyleFn = () => ({
-  padding: '3px',
-  display: 'inline-block',
-  cursor: 'pointer',
-  '&:hover': {
-    opacity: 0.7,
-  },
-})
-
-export const useCSS = (props: HamburgerButtonStyleProps) => ({
-  hamburgerBox: makeStyles([hamburgerBox])(props),
-  hamburgerInner: makeStyles([hamburgerInner])(props),
-  hamburger: makeStyles([hamburger])(props),
-})
+export const Hamburger = styled.div`
+  padding: 3px;
+  display: inline-block;
+  cursor: pointer;
+  :hover {
+    opacity: 0.7;
+  }
+`

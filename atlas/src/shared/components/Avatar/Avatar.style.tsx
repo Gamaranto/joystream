@@ -1,37 +1,25 @@
-import { makeStyles, StyleFn } from '../../utils'
-import { colors, spacing } from '../../theme'
+import styled from '@emotion/styled'
+import { colors, sizes, typography } from '../../theme'
 
 export type AvatarStyleProps = {
-  size?: 'small' | 'default' | 'large'
+  size: 'small' | 'default' | 'large'
 }
-
-const container: StyleFn = (_, { size = 'default' }) => {
-  const width = size === 'small' ? spacing.xs : size === 'default' ? spacing.m : spacing.xl
-  return {
-    borderRadius: 999,
-    minWidth: width,
-    backgroundColor: colors.gray[400],
-    color: colors.white,
-    display: 'inline-flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-
-    '& > span': {
-      textTransform: 'uppercase',
-      fontSize: '0.875rem',
-      lineHeight: 1.43,
-    },
+export const Container = styled.div<AvatarStyleProps>`
+  border-radius: 999px;
+  min-width: ${(props) => (props.size === 'small' ? sizes(2) : props.size === 'default' ? sizes(4) : sizes(6))};
+  background-color: ${colors.gray[400]};
+  color: ${colors.white};
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  > span {
+    text-transform: uppercase;
+    font-size: ${typography.sizes.body2};
   }
-}
-
-const img: StyleFn = () => ({
-  width: '100%',
-  height: '100%',
-  objectFit: 'cover',
-  borderRadius: 999,
-})
-
-export const useCSS = (props: AvatarStyleProps) => ({
-  container: makeStyles([container])(props),
-  img: makeStyles([img])(props),
-})
+`
+export const Img = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 999px;
+`

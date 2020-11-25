@@ -1,12 +1,5 @@
 import styled from '@emotion/styled'
-import { spacing, typography } from '../../theme'
-
-import { makeStyles, StyleFn } from '../../utils'
-
-const container: StyleFn = () => ({
-  display: 'flex',
-  flexDirection: 'column',
-})
+import { sizes, typography } from '../../theme'
 
 export const Container = styled.section`
   display: flex;
@@ -16,7 +9,7 @@ export const HeadingContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: ${spacing.m};
+  margin-bottom: ${sizes(4)};
 
   > h4 {
     font-size: ${typography.sizes.h5};
@@ -27,22 +20,3 @@ export const HeadingContainer = styled.div`
     padding: 0;
   }
 `
-const headingContainer: StyleFn = () => ({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'baseline',
-  marginBottom: spacing.m,
-  '& > h4': {
-    fontSize: '1.25rem',
-    margin: 0,
-  },
-  '& > button': {
-    fontSize: '0.875rem',
-    padding: 0,
-  },
-})
-
-export const useCSS = () => ({
-  container: makeStyles([container])({}),
-  headingContainer: makeStyles([headingContainer])({}),
-})
